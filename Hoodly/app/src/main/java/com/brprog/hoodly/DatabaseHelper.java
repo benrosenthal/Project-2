@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by User_1_Benjamin_Rosenthal on 2/5/16.
  */
@@ -87,6 +89,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
     }
 
+    public ArrayList<String> getEntityAspectsByName(String name) {
+        ArrayList<String> entityAspects = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME,
+                new String[]{COL_ITEM_NAME, COL_ITEM_DESCRIPTION},
+                COL_ITEM_NAME + " = ?",
+                new String[]{name},
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+            String resultName = cursor.getString(0);
+            entityAspects.add(resultName);
+            String resultDescription = cursor.getString(1);
+            entityAspects.add(resultDescription);
+        } else {
+            entityAspects.add("Data not found");
+        }
+        cursor.close();
+        return entityAspects;
+    }
+
     public String getDescriptionByName(String name){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -98,12 +124,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null);
 
-
-
-
         if(cursor.moveToFirst()){
             //String resultVal = cursor.getString(cursor.getColumnIndex(COL_ID));
             String resultVal = cursor.getString(cursor.getColumnIndex(COL_ITEM_NAME));
+            cursor.close();
             return resultVal;
             //return cursor.getString()
         } else {

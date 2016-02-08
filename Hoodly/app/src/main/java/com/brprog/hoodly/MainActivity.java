@@ -14,7 +14,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper mHoodlyHelper;
-    TextView mTextView;
+    TextView mNameTextView;
+    TextView mDescriptionTextView;
 
 
     @Override
@@ -22,13 +23,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextView = (TextView)findViewById(R.id.count_text_view);
+        mNameTextView = (TextView)findViewById(R.id.name_text_view);
+        mDescriptionTextView = (TextView)findViewById(R.id.description_text_view);
 
         DatabaseHelper mHoodlyHelper = DatabaseHelper.getInstance(MainActivity.this);
         //Cursor cursor = mDb.query("Hoods", new String[] {"name"}, null, null, null, null, null);
        //mTextView.setText(hoodlyHelper.getDescriptionById(1));
         //mTextView.setText(cursor.getColumnName(0));
-        mTextView.setText(mHoodlyHelper.getDescriptionByName("Big Building"));
+        //mNameTextView.setText(mHoodlyHelper.getDescriptionByName("Big Building"));
+        mNameTextView.setText(mHoodlyHelper.getEntityAspectsByName("Big Building").get(0));
+        mDescriptionTextView.setText(mHoodlyHelper.getEntityAspectsByName("Big Building").get(1));
         //handleIntent(getIntent());
     }
 
